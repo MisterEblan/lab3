@@ -24,15 +24,19 @@ def generate_sum_values(
     """
     value = 0
 
-    for l in range(n):
+    l = 0
+    while l < n:
         a_l = (-1)**l * ( 1 - ( (2**l) / (2**l + 1)  ) )
 
         value += a_l
 
         if l % k == 0:
+            l += 1
             continue
 
         yield l, value
+
+        l += 1
 
 def main() -> None:
 
