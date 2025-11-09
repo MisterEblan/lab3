@@ -10,11 +10,14 @@ def generate_sum_values(n: int) -> Generator[tuple[int, float]]:
         индекс и значение суммы при нём.
     """
     value = 0
-    for k in range(n):
+    k = 0
+    while k < n:
         a_k = (-1)**k * ( 1 - ( (2**k) / (2**k + 1)  ) )
         value += a_k
 
         yield k, value
+
+        k += 1
 
 def main() -> None:
     if (n := int(input("Ввод >>> "))) <= 0:
