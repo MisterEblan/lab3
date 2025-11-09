@@ -1,41 +1,60 @@
 from collections.abc import Generator
 
-def generate_sum_values(eps: float) -> Generator[tuple[int, float]]:
-    """Генерирование значений суммы
+# Escape-последовательности для цвета текста в терминале
+GREEN = "\033[32m"
+RED   = "\033[31m"
+RESET = "\033[0m"
 
-    Генерирует значения суммы до момента, пока |a_i| не станет
-    меньше погрешности eps.
+def generate_sum_values(
+    n: int,
+    k: int
+) -> Generator[tuple[int, float]]:
+    """Генерирование значений суммы до предела n
+
+    Генерирует значения суммы с верхнем пределом n,
+    пропуская каждый k-й член
 
     Args:
-        eps: погрешность.
+        n: верхний предел суммы.
+        k: члены кратные этому числу по индексу
+            будут пропускаться.
 
     Returns:
         индекс и значение суммы при нём.
     """
     value = 0
 
-    k = 0
-    while True:
-        a_k = (-1)**k * ( 1 - ( (2**k) / (2**k + 1)  ) )
+    for l in range(n):
+        a_l = (-1)**l * ( 1 - ( (2**l) / (2**l + 1)  ) )
 
-        value += a_k
+        value += a_l
 
-        yield k, value
-        k += 1
+        if l % k == 0:
+            continue
 
-        if abs(a_k) < eps:
-            break
+        yield l, value
 
 def main() -> None:
-    eps = float(input("Ввод >>> "))
 
-    if eps > 1:
-        raise ValueError("Погрешность больше единицы не имеет смысла")
-    elif eps <= 0:
-        raise ValueError("Погрешность меньше или равно нуля не имеет смысла")
+    n, k = map(
+        int,
+        input("Введите n и k через запятую >>> ").strip().split(",")
+    )
 
-    for i, value in generate_sum_values(eps):
-        print(f"{i:3}. {value}")
+    print(f"n = {n}\nk = {k}")
+
+    check_msg = "n < k? - "
+    if n < k:
+        print(RED + check_msg + "Да" + RESET)
+        return
+    else:
+        print(GREEN + check_msg + "Нет" + RESET)
+
+    for i, value in generate_sum_values(
+        n=n,
+        k=k
+    ):
+        print(f"\t{i:3}. {value}")
 
 if __name__ == "__main__":
     main()
