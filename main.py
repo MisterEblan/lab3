@@ -1,5 +1,4 @@
 from collections.abc import Generator
-from itertools import count
 
 def generate_sum_values(eps: float) -> Generator[tuple[int, float]]:
     """Генерирование значений суммы
@@ -15,12 +14,14 @@ def generate_sum_values(eps: float) -> Generator[tuple[int, float]]:
     """
     value = 0
 
-    for k in count():
+    k = 0
+    while True:
         a_k = (-1)**k * ( 1 - ( (2**k) / (2**k + 1)  ) )
 
         value += a_k
 
         yield k, value
+        k += 1
 
         if abs(a_k) < eps:
             break
