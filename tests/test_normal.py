@@ -12,6 +12,6 @@ def test_normal(
     called_args = [str(c) for c in mock_print.call_args_list]
 
     assert any(
-        "17. 0.29429820134360696" in arg
+        "A = 0.29429820134360696" in arg
         for arg in called_args
     ), "Ожидалось, что будет вычислено значение суммы с погрешностью 1e-5"

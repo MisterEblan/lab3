@@ -1,10 +1,9 @@
-from collections.abc import Generator
 from itertools import count
 
-def generate_sum_values(eps: float) -> Generator[tuple[int, float]]:
-    """Генерирование значений суммы
+def calculate_sum_with_precision(eps: float) -> tuple[int, float]:
+    """Вычисление значения суммы с определённой точностью
 
-    Генерирует значения суммы до момента, пока |a_i| не станет
+    Считает значения суммы до момента, пока |a_i| не станет
     меньше погрешности eps.
 
     Args:
@@ -20,10 +19,10 @@ def generate_sum_values(eps: float) -> Generator[tuple[int, float]]:
 
         value += a_k
 
-        yield k, value
+        if abs(a_k) <= eps:
+            return k, value
 
-        if abs(a_k) < eps:
-            break
+    raise RuntimeError(f"Не удалось вычислить значение с точностью {eps}")
 
 def main() -> None:
     eps = float(input("Ввод >>> "))
@@ -33,8 +32,12 @@ def main() -> None:
     elif eps <= 0:
         raise ValueError("Погрешность меньше или равно нуля не имеет смысла")
 
-    for i, value in generate_sum_values(eps):
-        print(f"{i:3}. {value}")
+    print(f"eps = {eps}")
+
+    i, value = calculate_sum_with_precision(eps)
+
+    print(f"A = {value}")
+    print(f"i = {i}")
 
 if __name__ == "__main__":
     main()
